@@ -74,5 +74,9 @@ if (search != null) {
 	}
 }
 %>
+<br/>
+<form action="/compare" method="get">
+<input type="submit" value="Friend Recommendations"/>
+</form>
 </body>
 </html>

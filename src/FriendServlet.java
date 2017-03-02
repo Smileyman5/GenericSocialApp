@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Created by alex on 2/18/2017.
@@ -33,10 +34,11 @@ public class FriendServlet extends HttpServlet
             // Get PrintWriter from response
             out = response.getWriter();
 
-            if (session.isNew() || session.getAttribute("name") == null)
+            if (session.isNew() || session.getAttribute("username") == null)
             {
                 logger.info("No one is signed in. Suggesting redirection to register page.");
-                createMessage("<p style=color:red>Please register first. Go <a href=\"index.jsp\">here</a>.</p>\n", out);
+                request.setAttribute("message", "<p style=color:red>Please sign-in/register first. Go <a href=\"register.jsp\">here</a>.</p>\n");
+                request.getRequestDispatcher("friends.jsp").include(request, response);
                 return;
             }
 
@@ -50,24 +52,49 @@ public class FriendServlet extends HttpServlet
             // Allocate a Statement object within the Connection
             stmt = conn.createStatement();
 
-            // Execute a SQL select query
-            String sqlStr = "select username, gender from users;";
+            String name = (String) session.getAttribute("username");
+            // SQL query string -- grabbing user's friends
+            String sqlStr = "select * from friends where username='" + name + "';";
             ResultSet resultSet = stmt.executeQuery(sqlStr);
 
-            // Display users with partial or full match
-            String name = (String) session.getAttribute("name");
-            StringBuilder message = new StringBuilder("<ul>");
-            String result;
-            String g2 = (String) session.getAttribute("gender");
+            // User's friends
+            ArrayList<String> friends = new ArrayList<>();
             while (resultSet.next())
+                friends.add(resultSet.getString("friend"));
+            resultSet.close();
+
+            String result;
+            int count = 0;
+            // Display users with partial or full match
+            StringBuilder message = new StringBuilder("<ul>");
+            for (String username: friends)
             {
-                String g1 = resultSet.getString("gender");
-                result = resultSet.getString("username");
-                if ((result.contains(name) || name.contains(result) || g1.equals(g2)) && !result.equals(name))
-                    message.append("<li>").append(result).append("</li>");
+                // SQL query string -- grabbing friends of user's friends max 5
+                sqlStr = "select * from friends where username='" + username + "';";
+                ResultSet rs = stmt.executeQuery(sqlStr);
+                while (rs.next())
+                {
+                    result = rs.getString("friend");
+                    if (!result.equals(name))
+                    {
+                        message.append("<li>").append(result).append("<br/>").append(formRequest(result)).append("</li>");
+                        if (count++ >= 5)
+                        {
+                            message.append("</ul>");
+                            request.setAttribute("message", message.toString());
+                            request.getRequestDispatcher("friends.jsp").include(request, response);
+                            return;
+                        }
+                    }
+                }
+                rs.close();
             }
             message.append("</ul>");
-            createMessage(message.toString(), out);
+
+            if (count == 0)
+                message = new StringBuilder("No friends to recommend :/");
+            request.setAttribute("message", message.toString());
+            request.getRequestDispatcher("friends.jsp").include(request, response);
 
         } catch (InstantiationException ex)
         {
@@ -97,22 +124,13 @@ public class FriendServlet extends HttpServlet
         }
     }
 
-    private void createMessage(String msg, PrintWriter out)
+    private String formRequest(String result)
     {
-        out.println("<!DOCTYPE html>\n" +
-                "<html lang=\"en\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Friend Recommendations</title>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "<h1>Friend Recommendations</h1>\n" +
-                "<form action=\"/friends\" method=\"get\">\n" +
-                "      <input type=\"submit\" value=\"Recommend\">\n" +
-                "</form>\n" +
-                "<p>Already have friends here? Search <a href=\"search.jsp\">here</a>.</p>" +
-                 msg +
-                "</body>\n" +
-                "</html>");
+        StringBuilder request = new StringBuilder("<form action=\"/friends\" method=\"post\">");
+        request.append("<input type=\"hidden\" name=\"friend\" value=\"true\" />")
+                .append("<input type=\"hidden\" name=\"name\" id=\"name\" value=\"" + result + "\" />")
+                .append("<input type=\"submit\" value=\"Send Friend Request\" />")
+                .append("</form>");
+        return request.toString();
     }
 }

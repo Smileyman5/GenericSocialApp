@@ -17,6 +17,9 @@
       <input type="submit" value="Recommend">
 </form>
 <p>Already have friends here? Search <a href="search.jsp">here</a>.</p>
-<p>Still need to register? Go <a href="index.jsp">here</a>.</p>
+<% if (request.getAttribute("message") == null) { %>
+    <p>Still need to register? Go <a href="register.jsp">here</a>.</p>
+<% } %>
+${message}
 </body>
 </html>

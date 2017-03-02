@@ -19,9 +19,6 @@ public class RegisterServlet extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        request.getSession().setAttribute("name", request.getParameter("username"));
-        request.getSession().setAttribute("gender", "male");
-        String message;
         Connection conn = null;
         Statement stmt = null;
         PrintWriter out = null;
@@ -36,16 +33,16 @@ public class RegisterServlet extends HttpServlet
             // Check for valid fields
             if (request.getParameter("username").equals("") || request.getParameter("password").equals("") || request.getParameter("re_password").equals(""))
             {
-                message = "          <p style=color:#ff0033> Please fill out all fields. </p>";
-                createMessage(message, out);
+                request.setAttribute("message", "          <p style=color:#ff0033> Please fill out all fields. </p>");
                 logger.warn("User did not fill out all fields.");
+                request.getRequestDispatcher("register.jsp").include(request, response);
                 return;
             }
             else if (!request.getParameter("password").equals(request.getParameter("re_password")))
             {
-                message = "          <p style=color:#ff0033> Password fields do not match. </p>";
-                createMessage(message, out);
+                request.setAttribute("message", "          <p style=color:#ff0033> Password fields do not match. </p>");
                 logger.warn("User's password fields do not match.");
+                request.getRequestDispatcher("register.jsp").include(request, response);
                 return;
             }
 
@@ -70,19 +67,21 @@ public class RegisterServlet extends HttpServlet
                 {
                     logger.warn(resultSet.getString("username") + " already exists in USERS table.");
                     // Print an HTML page as the output
-                    message = "          <p style=color:#ff0033> Username is already taken. :/ </p>";
-                    createMessage(message, out);
+                    request.setAttribute("message", "          <p style=color:#ff0033> Username is already taken. :/ </p>");
+                    request.getRequestDispatcher("register.jsp").include(request, response);
                     return;
                 }
             }
 
             sqlStr = "insert into Users values ('" + request.getParameter("username") + "', '" + request.getParameter("password") + "', NULL, NULL, NULL, 'male', 0);";
+            request.getSession().setAttribute("username", request.getParameter("username"));
+            request.getSession().setAttribute("gender", "male");
             if (!stmt.execute(sqlStr))
             {
                 logger.info("Added " + request.getParameter("username") + " to USERS table.");
                 // Print an HTML page as the output
-                message = "          <p style=color:#66CD00> User added. Welcome, " + request.getParameter("username") + "! :D</p>";
-                createMessage(message, out);
+                request.setAttribute("message", "          <p style=color:#66CD00> User added. Welcome, " + request.getParameter("username") + "! :D</p>");
+                request.getRequestDispatcher("register.jsp").forward(request, response);
             }
             else
                 logger.error("Failed to add " + request.getParameter("username") + " to USERS table.");
@@ -106,27 +105,5 @@ public class RegisterServlet extends HttpServlet
                 logger.error(ex.getSQLState());
             }
         }
-    }
-
-    private void createMessage(String msg, PrintWriter out)
-    {
-        out.println("<!DOCTYPE html>\n" +
-                "<html lang=\"en-US\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Welcome to Generic Social App</title>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "<h1>Welcome to Generic Social App!</h1>" +
-                "    <form action=\"/register\" method=\"post\">\n" +
-                msg +
-                "          Username: <input type=\"text\" name=\"username\"><br>\n" +
-                "          Password: <input type=\"password\" name=\"password\"><br>\n" +
-                "          Re-type Password: <input type=\"password\" name=\"re_password\"><br>\n" +
-                "          <input type=\"submit\" value=\"Register\">\n" +
-                "    </form>\n" +
-                "<p>Already have friends here? Search <a href=\"search.html\">here</a>.</p>\n" +
-                "</body>\n" +
-                "</html>");
     }
 }

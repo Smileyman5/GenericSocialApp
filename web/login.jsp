@@ -22,7 +22,7 @@ Username: <input type="text" name="username"/> <br /><br />
 Password:  	<input type="password" name="password" /><br /><br />
 </fieldset>
 <input type="submit" value="Login" onclick="form.action='login';" />
-<input type="submit" value="Register" onclick="form.action='register';" />
+<input type="submit" value="Register" onclick="form.action='register.jsp';" />
 </form>
 
 </body>
