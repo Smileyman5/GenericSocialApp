@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.*;
 
 /**
@@ -21,15 +20,8 @@ public class SearchServlet extends HttpServlet
     {
         Connection conn = null;
         Statement stmt = null;
-        PrintWriter out = null;
         try
         {
-            // Set response type
-            response.setContentType("text/html");
-
-            // Get PrintWriter from response
-            out = response.getWriter();
-
             // Connect to JDBC Driver
             Class.forName("com.mysql.jdbc.Driver").newInstance();
 
@@ -55,7 +47,8 @@ public class SearchServlet extends HttpServlet
                     message.append("<li>").append(result).append("</li>");
             }
             message.append("</ul>");
-            createMessage(message.toString(), out);
+            request.setAttribute("message", message.toString());
+            request.getRequestDispatcher("search.jsp").forward(request, response);
 
         } catch (InstantiationException ex) {
             logger.error("Error: unable to instantiate driver class!");
@@ -71,31 +64,9 @@ public class SearchServlet extends HttpServlet
                 // Close the resources
                 if (stmt != null) stmt.close();
                 if (conn != null) conn.close();
-                if (out != null) out.close();
             } catch (SQLException ex) {
                 logger.error(ex.getSQLState());
             }
         }
-    }
-
-    private void createMessage(String msg, PrintWriter out)
-    {
-        out.println("<!DOCTYPE html>\n" +
-                "<html lang=\"en\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Search Page</title>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "<h1>Search for friends!</h1>\n" +
-                "<form action=\"/search\" method=\"get\">\n" +
-                "      Search for a name: <input type=\"text\" name=\"name\"><br>\n" +
-                "      <input type=\"submit\" value=\"Search\">\n" +
-                "</form>\n" +
-                "<p>Still need to register? Go <a href=\"index.html\">here</a>.</p>\n" +
-                "<p>Already registered? Get recommendations for friends <a href=\"friends.jsp\">here</a>.</p>" +
-                    msg +
-                "</body>\n" +
-                "</html>");
     }
 }

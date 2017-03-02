@@ -65,6 +65,7 @@ public class FriendServlet extends HttpServlet
 
             String result;
             int count = 0;
+            ArrayList<String> dups = new ArrayList<>();
             // Display users with partial or full match
             StringBuilder message = new StringBuilder("<ul>");
             for (String username: friends)
@@ -75,8 +76,9 @@ public class FriendServlet extends HttpServlet
                 while (rs.next())
                 {
                     result = rs.getString("friend");
-                    if (!result.equals(name))
+                    if (!result.equals(name) && !friends.contains(result) && !dups.contains(result))
                     {
+                        dups.add(result);
                         message.append("<li>").append(result).append("<br/>").append(formRequest(result)).append("</li>");
                         if (count++ >= 5)
                         {

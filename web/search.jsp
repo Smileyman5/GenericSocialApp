@@ -19,5 +19,6 @@
 </form>
 <p>Still need to register? Go <a href="register.jsp">here</a>.</p>
 <p>Already registered? Get recommendations for friends <a href="friends.jsp">here</a>.</p>
+${message}
 </body>
 </html>
