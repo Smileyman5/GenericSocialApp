@@ -6,9 +6,9 @@ drop table if exists Friends;
 drop table if exists RequestStatus;
 drop table if exists Users;
 
-
 /* Users Table */
 create table Users (
+   id          int NOT NULL AUTO_INCREMENT,
    username    varchar(32) NOT NULL,
    password    varchar(32) NOT NULL,
    birthday    varchar(32),
@@ -16,13 +16,13 @@ create table Users (
    last_name   varchar(32),
    gender      varchar(32),
    login       int NOT NULL,
-   primary key (username));
+   primary key (id));
 
-insert into Users values ('Smileyman5', 'password', '03/16/1996', 'Alex', 'Kouthoofd', 'male', 0);
-insert into Users values ('JonMan', 'password', '02/18/1995', 'Jon', 'Baker', 'male', 0);
-insert into Users values ('Dummy', 'password', '12/12/1990', 'Dum', 'Me', 'male', 0);
-insert into Users values ('JesGirl', 'password', '06/08/1993', 'Jess', 'Smith', 'female', 0);
-insert into Users values ('DaisyDuke', 'password', '11/21/1995', 'Daisy', 'Duke', 'female', 0);
+insert into Users values (NULL, 'Smileyman5', 'password', '03/16/1996', 'Alex', 'Kouthoofd', 'male', 0);
+insert into Users values (NULL, 'JonMan', 'password', '02/18/1995', 'Jon', 'Baker', 'male', 0);
+insert into Users values (NULL, 'Dummy', 'password', '12/12/1990', 'Dum', 'Me', 'male', 0);
+insert into Users values (NULL, 'JesGirl', 'password', '06/08/1993', 'Jess', 'Smith', 'female', 0);
+insert into Users values (NULL, 'DaisyDuke', 'password', '11/21/1995', 'Daisy', 'Duke', 'female', 0);
 
 SELECT * FROM Users;
 
@@ -37,21 +37,20 @@ INSERT INTO RequestStatus VALUES ('Confirmed');
 
 /* Friends Table */
 create table Friends (
+   id          int not null AUTO_INCREMENT,
    username    varchar(32),
    friend      varchar(32),
    status      varchar(32),
    FOREIGN KEY (username) REFERENCES Users(username),
    FOREIGN KEY (friend) REFERENCES Users(username),
    FOREIGN KEY (status) REFERENCES RequestStatus(status),
-   primary key (username, friend));
+   primary key (id));
 
-insert into Friends values ('Smileyman5', 'JonMan', 'Confirmed');
-insert into Friends values ('JonMan', 'Smileyman5', 'Confirmed');
-insert into Friends values ('Dummy', 'JesGirl', 'Confirmed');
-insert into Friends values ('JesGirl', 'Dummy', 'Confirmed');
-insert into Friends values ('Smileyman5', 'JesGirl', 'Pending');
-insert into Friends values ('JesGirl', 'Smileyman5', 'Pending');
-insert into Friends values ('JonMan', 'DaisyDuke', 'Pending');
-insert into Friends values ('DaisyDuke', 'JonMan', 'Pending');
+insert into Friends values (NULL, 'Smileyman5', 'JonMan', 'Confirmed');
+insert into Friends values (NULL, 'JonMan', 'Smileyman5', 'Confirmed');
+insert into Friends values (NULL, 'Dummy', 'JesGirl', 'Confirmed');
+insert into Friends values (NULL, 'JesGirl', 'Dummy', 'Confirmed');
+insert into Friends values (NULL, 'Smileyman5', 'JesGirl', 'Pending');
+insert into Friends values (NULL, 'JonMan', 'DaisyDuke', 'Pending');
 
 select * from Friends;

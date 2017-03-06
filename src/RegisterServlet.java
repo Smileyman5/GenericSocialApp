@@ -73,7 +73,7 @@ public class RegisterServlet extends HttpServlet
                 }
             }
 
-            sqlStr = "insert into Users values ('" + request.getParameter("username") + "', '" + request.getParameter("password") + "', NULL, NULL, NULL, 'male', 0);";
+            sqlStr = "insert into Users values (NULL, '" + request.getParameter("username") + "', '" + request.getParameter("password") + "', NULL, NULL, NULL, 'male', 0);";
             request.getSession().setAttribute("username", request.getParameter("username"));
             request.getSession().setAttribute("gender", "male");
             if (!stmt.execute(sqlStr))

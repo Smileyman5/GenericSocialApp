@@ -29,11 +29,11 @@ public class Friends extends HttpServlet {
 		String friend = request.getParameter("friend");
 		String username = (String) request.getSession().getAttribute("username");
 		if (friend != null && friend.equals("true")) {
-			connect("INSERT INTO Friends VALUES ('" + username + "', '" + name.trim() + "', 'Pending');");
+			connect("INSERT INTO Friends VALUES (NULL, '" + username + "', '" + name.trim() + "', 'Pending');");
 		}
 		else if (confirm != null && confirm.equals("true")) {
 			connect("UPDATE Friends SET status='Confirmed' WHERE username='" + name.trim() + "' AND friend='" + username + "';");
-            connect("INSERT INTO Friends VALUES ('" + username + "', '" + name.trim() + "', 'Confirmed');");
+            connect("INSERT INTO Friends VALUES (NULL, '" + username + "', '" + name.trim() + "', 'Confirmed');");
 		}
 		else if (decline != null && decline.equals("true")) {
 			connect("DELETE FROM Friends WHERE username='" + name.trim() + "' AND friend='" + username + "';");
