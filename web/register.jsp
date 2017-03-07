@@ -13,7 +13,7 @@
 </head>
 <body>
 <h1>Welcome to Generic Social App!</h1>
-<form action="/register" method="post">
+<form action="register" method="post">
     <fieldset>
         <legend>Register</legend>
         ${message}

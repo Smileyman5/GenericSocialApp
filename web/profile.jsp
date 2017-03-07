@@ -35,12 +35,12 @@ if (reqFriends != null && reqFriends.size() != 0) {
 		%>
 		<li>
 		<%out.println(friend);%>
-		<form action="/friends" method="post">
+		<form action="friends" method="post">
 		<input type="hidden" name="confirm" value="true" />
 		<input type="hidden" name="name" id="name" value="<%out.println(friend);%>" />
 		<input type="submit" value="Confirm" />
 		</form>
-		<form action="/friends" method="post">
+		<form action="friends" method="post">
 		<input type="hidden" name="decline" value="true" />
 		<input type="hidden" name="name" id="name" value="<%out.println(friend);%>" />
 		<input type="submit" value="Decline" />
@@ -53,7 +53,7 @@ if (reqFriends != null && reqFriends.size() != 0) {
 }
 %>
 
- <form action="/profile" method="post">
+ <form action="profile" method="post">
  Search for a name: <input type="text" name="user"><br>
 <input type="submit" value="Submit" onclick="form.action='profile';" />
 </form>
@@ -64,7 +64,7 @@ if (search != null) {
 		%>
 		<li>
 		<%out.println(friend);%>
-		<form action="/friends" method="post">
+		<form action="friends" method="post">
 		<input type="hidden" name="friend" value="true" />
 		<input type="hidden" name="name" id="name" value="<%=friend%>" />
 		<input type="submit" value="Send Friend Request" />
@@ -75,12 +75,12 @@ if (search != null) {
 }
 %>
 <br/>
-<form action="/compare" method="get">
+<form action="compare" method="get">
 	<input type="submit" value="Friend Recommendations"/>
 </form>
 <br>
 <br>
-<form action="/login" method="post">
+<form action="login" method="post">
 	<input type="submit" value="Logout"/>
 </form>
 </body>

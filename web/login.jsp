@@ -7,7 +7,7 @@
 <title>Login Screen</title>
 </head>
 <body>
-<form method="post" action="/login">
+<form method="post" action="login">
 <fieldset>
 <legend>Login</legend>
 <%

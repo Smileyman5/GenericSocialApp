@@ -13,11 +13,11 @@
 </head>
 <body>
 <h1>Friend Recommendations</h1>
-<form action="/compare" method="get">
+<form action="compare" method="get">
       <input type="submit" value="Recommend">
 </form>
 <% if (request.getSession().getAttribute("username") != null) { %>
-<form action="/stats" method="post">
+<form action="stats" method="post">
       <input type="submit" value="Back to Profile">
 </form>
 <% } %>

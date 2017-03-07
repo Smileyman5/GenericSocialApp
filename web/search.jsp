@@ -13,7 +13,7 @@
 </head>
 <body>
 <h1>Search for friends!</h1>
-<form action="/search" method="get">
+<form action="search" method="get">
       Search for a name: <input type="text" name="name"><br>
       <input type="submit" value="Search">
 </form>
