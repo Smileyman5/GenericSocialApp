@@ -69,7 +69,7 @@ public class Login extends HttpServlet {
 			   Class.forName("com.mysql.jdbc.Driver");
 			   con = DriverManager.getConnection("jdbc:mysql://localhost:3306/social_data?useSSL=false", "smileyman5", "password");
 			   state = con.createStatement();
-			   ResultSet set = state.executeQuery("SELECT * FROM Users WHERE username='" + username + "' AND password='" + password + "'");
+			   ResultSet set = state.executeQuery("SELECT * FROM Users WHERE BINARY username='" + username + "' AND BINARY password='" + password + "'");
 			   return set.next();
 		   } catch (SQLException | ClassNotFoundException e) {
 			   e.printStackTrace();
