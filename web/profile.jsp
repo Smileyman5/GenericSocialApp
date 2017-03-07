@@ -76,7 +76,12 @@ if (search != null) {
 %>
 <br/>
 <form action="/compare" method="get">
-<input type="submit" value="Friend Recommendations"/>
+	<input type="submit" value="Friend Recommendations"/>
+</form>
+<br>
+<br>
+<form action="/login" method="post">
+	<input type="submit" value="Logout"/>
 </form>
 </body>
 </html>

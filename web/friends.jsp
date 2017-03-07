@@ -16,6 +16,11 @@
 <form action="/compare" method="get">
       <input type="submit" value="Recommend">
 </form>
+<% if (request.getSession().getAttribute("username") != null) { %>
+<form action="/stats" method="post">
+      <input type="submit" value="Back to Profile">
+</form>
+<% } %>
 <p>Already have friends here? Search <a href="search.jsp">here</a>.</p>
 <% if (request.getAttribute("message") == null) { %>
     <p>Still need to register? Go <a href="register.jsp">here</a>.</p>
