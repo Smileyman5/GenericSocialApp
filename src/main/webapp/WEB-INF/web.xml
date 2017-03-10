@@ -39,6 +39,28 @@
         <servlet-class>Friends</servlet-class>
     </servlet>
 
+    <!-- RESTFUL SERVLETS -->
+
+    <servlet>
+        <servlet-name>RESTfulFriends</servlet-name>
+        <servlet-class>restful.Friends</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>RESTfulLogin</servlet-name>
+        <servlet-class>restful.Login</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>RESTfulProfile</servlet-name>
+        <servlet-class>restful.Profile</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>RESTfulStats</servlet-name>
+        <servlet-class>restful.Stats</servlet-class>
+    </servlet>
+
     <!-- Note: All <servlet> elements MUST be grouped together and
          placed IN FRONT of the <servlet-mapping> elements -->
 
@@ -75,5 +97,27 @@
     <servlet-mapping>
         <servlet-name>Friends</servlet-name>
         <url-pattern>/friends</url-pattern>
+    </servlet-mapping>
+
+    <!-- RESTFUL Servlet Mappings -->
+
+    <servlet-mapping>
+        <servlet-name>RESTfulFriends</servlet-name>
+        <url-pattern>/restful/friends</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>RESTfulLogin</servlet-name>
+        <url-pattern>/restful/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>RESTfulProfile</servlet-name>
+        <url-pattern>/restful/profile</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>RESTfulStats</servlet-name>
+        <url-pattern>/restful/stats</url-pattern>
     </servlet-mapping>
 </web-app>
