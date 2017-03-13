@@ -5,25 +5,20 @@
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
 <title>Login Screen</title>
+<script src="js/jquery-3.1.1.js"></script>
+<script src="js/login.js"></script>
 </head>
 <body>
-<form method="post" action="login">
+<form>
 <fieldset>
 <legend>Login</legend>
-<%
-	if (request.getAttribute("criteria") != null && request.getAttribute("criteria").equals("true")) {
-		%><font color="red">Some criteria were not filled in.<br><br></font><%
-	}
-	else if (request.getAttribute("failed") != null && request.getAttribute("failed").equals("true")) {
-		%><font color="red">Username/Password are incorrect.<br><br></font><%
-	}
-%>
-Username: <input type="text" name="username"/> <br /><br />
-Password:  	<input type="password" name="password" /><br /><br />
+<font color="red"><div id="wrong"></div></font>   
+Username: <input type="text" name="username" id="username"/> <br /><br />
+Password:  	<input type="password" name="password" id="password" /><br /><br />
 </fieldset>
-<input type="submit" value="Login" onclick="form.action='login';" />
-<input type="submit" value="Register" onclick="form.action='register.jsp';" />
 </form>
+<button id="login">Login</button>
+<button id="register">Register</button>
 
 </body>
 </html>

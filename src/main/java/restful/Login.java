@@ -1,27 +1,23 @@
 package restful;
 
+import com.google.gson.Gson;
+
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.Gson;
-
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.*;
-
 
 /**
  * @author Jonathan Baker
  */
-@WebServlet("/login")
 public class Login extends HttpServlet {
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 	 throws IOException, ServletException {
 		
+		System.out.println("Reached login");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
@@ -34,7 +30,8 @@ public class Login extends HttpServlet {
 			result = "criteria";
 		}
 		else if (login(username, password)) {
-			result = "loggedin";
+			response.setStatus(HttpServletResponse.SC_OK);
+			return;
 		}
 		else {
 			result = "failed";
@@ -69,7 +66,7 @@ public class Login extends HttpServlet {
 		   Statement state = null;
 		   try {
 			   Class.forName("com.mysql.jdbc.Driver");
-			   con = DriverManager.getConnection("jdbc:mysql://localhost:3306/social_data?useSSL=false", "root", "");
+			   con = DriverManager.getConnection("jdbc:mysql://localhost:3306/social_data?useSSL=false", "smileyman5", "password");
 			   state = con.createStatement();
 			   ResultSet set = state.executeQuery("SELECT * FROM Users WHERE BINARY username='" + username + "' AND BINARY password='" + password + "'");
 			   return set.next();

@@ -103,21 +103,21 @@
 
     <servlet-mapping>
         <servlet-name>RESTfulFriends</servlet-name>
-        <url-pattern>/restful/friends</url-pattern>
+        <url-pattern>/restful/friends/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>RESTfulLogin</servlet-name>
-        <url-pattern>/restful/login</url-pattern>
+        <url-pattern>/restful/login/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>RESTfulProfile</servlet-name>
-        <url-pattern>/restful/profile</url-pattern>
+        <url-pattern>/restful/profile/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>RESTfulStats</servlet-name>
-        <url-pattern>/restful/stats</url-pattern>
+        <url-pattern>/restful/stats/*</url-pattern>
     </servlet-mapping>
 </web-app>
