@@ -156,11 +156,41 @@ public class Profile extends HttpServlet {
             runPrep(data, pstmt, "gender");
             pstmt.close();
 
+            JsonObject userData = getUserData(paths[0], conn);
+
+            response.setContentType("application/json");
+            response.getWriter().write(userData.toString());
+
 		} catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
 	}
+
+    private JsonObject getUserData(String path, Connection conn)
+    {
+        JsonObject userData = new JsonObject();
+        try (Statement stmt = conn.createStatement())
+        {
+            ResultSet resultSet = stmt.executeQuery("Select * from users where username = '" + path + "'");
+            if (resultSet != null)
+            {
+                resultSet.next();
+                userData.addProperty("username", resultSet.getString(1));
+                userData.addProperty("password", "n/a");
+                userData.addProperty("birthday", resultSet.getString(3));
+                userData.addProperty("first_name", resultSet.getString(4));
+                userData.addProperty("last_name", resultSet.getString(5));
+                userData.addProperty("gender", resultSet.getString(6));
+                userData.addProperty("login", resultSet.getInt(7));
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return userData;
+    }
 
     /**
      * Delete removes the user given in the URL path
@@ -190,7 +220,8 @@ public class Profile extends HttpServlet {
         // Simple and unavoidable try catch statement
         try { Class.forName("com.mysql.jdbc.Driver"); } catch (ClassNotFoundException e) { e.printStackTrace(); }
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/social_data?useSSL=false", "smileyman5", "password"))
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/social_data?useSSL=false", "smileyman5", "password");
+             Statement stmt =  conn.createStatement())
         {
             ArrayList<String> allUsers = DBManager.getUsers(conn);
             if (!allUsers.contains(paths[0]))
@@ -201,23 +232,9 @@ public class Profile extends HttpServlet {
 
             logger.info("Removing user: " + paths[0]);
 
-            Statement stmt =  conn.createStatement();
-            ResultSet resultSet = stmt.executeQuery("Select * from users where username = '" + paths[0] + "'");
-            JsonObject userData = new JsonObject();
-            if (resultSet != null)
-            {
-                resultSet.next();
-                userData.addProperty("username", resultSet.getString(1));
-                userData.addProperty("password", "n/a");
-                userData.addProperty("birthday", resultSet.getString(3));
-                userData.addProperty("first_name", resultSet.getString(4));
-                userData.addProperty("last_name", resultSet.getString(5));
-                userData.addProperty("gender", resultSet.getString(6));
-                userData.addProperty("login", resultSet.getInt(7));
-            }
+            JsonObject userData = getUserData(paths[0], conn);
 
             stmt.execute("Delete from users where username = '" + paths[0] + "'");
-            stmt.close();
 
             response.setContentType("application/json");
             response.getWriter().write(userData.toString());

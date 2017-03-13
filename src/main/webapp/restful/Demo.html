@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restful Demo</title>
+    <script>function deleteCommand(s) {
+        let req = new XMLHttpRequest();
+        req.onreadystatechange = function() {
+            if (req.readyState == 4 && req.status == 200) {
+                alert("Server responded with: " + req.responseText);
+            }
+        };
+        req.open("delete", "http://localhost:9999/restful" + s, true);
+        req.send(null);
+    }
+    function putCommandWithPayload(s) {
+        let req = new XMLHttpRequest();
+        req.onreadystatechange = function() {
+            if (req.readyState == 4 && req.status == 200) {
+                alert("Server responded with: " + req.responseText);
+            }
+        };
+        req.open("PUT", "http://localhost:9999/restful" + s, true);
+        let data =
+        {
+            "firstName": "Jon",
+            "lastName": "Dude",
+            "birthday": "02/17/1996",
+            "gender": "male"
+        };
+        req.setRequestHeader("Content-Type", "application/json");
+        req.send(JSON.stringify(data));
+    }
+    function putCommand(s) {
+        let req = new XMLHttpRequest();
+        req.onreadystatechange = function() {
+            if (req.readyState == 4 && req.status == 200) {
+                alert("Server responded with: " + req.responseText);
+            }
+        };
+        req.open("PUT", "http://localhost:9999/restful" + s, true);
+        req.send(null);
+    }
+
+    </script>
+</head>
+<body>
+    <form action="stats/Jon" method="get">
+          <input type="submit" value="Get user Jon's login statistics">
+    </form>
+    <br>
+    <button onclick="putCommand('/stats/Jon/34')">Set Jon's login statistics to 34</button>
+    <br>
+    <br>
+    <button onclick="putCommand('/stats/Jon/5')">Set Jon's login statistics to 5</button>
+    <br>
+    <br>
+    <form action="/restful/stats" method="get">
+          <input type="submit" value="Get all user's login statistics">
+    </form>
+    <br>
+    <form action="profile/Smileyman5" method="get">
+          <input type="submit" value="Get user Smileyman5's profile information">
+    </form>
+    <br>
+    <button onclick="putCommandWithPayload('/profile/Jon')">Update/Create user Jon's account</button>
+    <br>
+    <br>
+    <button onclick="deleteCommand('/profile/Jon')">Delete Jon's account</button>
+</body>
+</html>
